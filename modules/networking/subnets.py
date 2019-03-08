@@ -30,53 +30,48 @@ OUTPUT_VPC_ID = 'VpcId'
 AWS_TEMPLATE_VERSION = '2010-09-09'
 
 
-class NETWORKING(Blueprint):
+class SUBNETS(Blueprint):
     """Stacker blueprint for creating a Basic VPC."""
 
     VARIABLES = {
-        'VpcCidr': {
+        'VpcId': {
             'type': str,
-            'description': 'CIDR block range for VPC ip space',
         },
-
-        'VpcName': {
+        'PublicSubnet1': {
             'type': str,
-            'description': 'The Name of the deployed VPC',
-            'Default': 'myVPC'
+            'description': 'des'
+        },
+        'PublicSubnet2': {
+            'type': str,
+            'description': 'des'
         }
     }
 
-    def create_vpc(self):
-        """Create the VPC resources."""
+    def create_subnet(self):
+        """Create the Subnets resources."""
         template = self.template
         variables = self.get_variables()
         self.template.add_version(AWS_TEMPLATE_VERSION)
-        self.template.add_description('Create a VPC')
+        self.template.add_description('Create a Subnets')
 
-        vpc = ec2.VPC(
-            VPC_NAME,
-            CidrBlock=variables['VpcCidr'],
-            EnableDnsSupport=True,
-            EnableDnsHostnames=True,
-            Tags=[ec2.Tag('Name', variables['VpcName'])]
+        template.add_resource (
+            ec2.Subnet(
+                "PublicSubnet1",
+                AvailabilityZone="ca-central-1a",
+                VpcId=variables['VpcId'],
+                CidrBlock='10.0.0.0/24',
+                Tags=[ec2.Tag('Name', "PublicSubnet1")]
+            )
         )
-
-        template.add_resource(vpc)
-
         template.add_output(
             Output(
-                OUTPUT_VPC_ID,
-                Value=VPC_ID
+                'PublicSubnet1Id',
+                Value=Ref('PublicSubnet1')
             )
         )
 
+
     def create_template(self):
         """Create template (main function called by Stacker)."""
-        self.create_vpc()
+        self.create_subnet()
 
-
-# Helper section to enable easy blueprint -> template generation
-# (just run `python <thisfile>` to output the json)
-if __name__ == "__main__":
-    from stacker.context import Context
-    print(NETWORKING('test', Context({'namespace': 'test'}), None).to_json())
