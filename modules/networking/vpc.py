@@ -43,6 +43,11 @@ class VPC(Blueprint):
             'type': str,
             'description': 'The Name of the deployed VPC',
             'Default': 'myVPC'
+        },
+        'UseInternetGW': {
+            'type': bool
+            'description': 'toggle the creation of internetGW on/off'
+            'default': True
         }
     }
 
@@ -67,6 +72,18 @@ class VPC(Blueprint):
             Output(
                 OUTPUT_VPC_ID,
                 Value=VPC_ID
+            )
+        )
+        
+
+        # create the internet gateway if needed
+        if variables["UseInternetGW"]:
+            template.add_resource(ec2.InternetGateway('InternetGatway'))
+            template.add_resource(
+            ec2.VPCGatewayAttachment(
+                'GatewayAttach',
+                VpcId=Ref(VPC_NAME),
+                InternetGatewayId=Ref('InternetGatway')
             )
         )
 
