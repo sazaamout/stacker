@@ -83,7 +83,7 @@ class SUBNETS(Blueprint):
         template.add_output(
             Output(
                 'PrivateSubnet1Id',
-                Value=Ref('privateSubnet1')
+                Value=Ref('PrivateSubnet1')
             )
         )
 
