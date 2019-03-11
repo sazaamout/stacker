@@ -35,6 +35,14 @@ class SUBNETS(Blueprint):
             'type': str,
             'description': 'des'
         },
+        'ProtectedSubnet1': {
+            'type': str,
+            'description': 'des'
+        },
+        'ProtectedSubnet1_cidr': {
+            'type': str,
+            'description': 'des'
+        },
         'zone': {
             'type': str,
         }
@@ -84,6 +92,26 @@ class SUBNETS(Blueprint):
             Output(
                 'PrivateSubnet1Id',
                 Value=Ref('PrivateSubnet1')
+            )
+        )
+
+        # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        # create the Protected Subnet(s)
+        # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        template.add_resource (
+            ec2.Subnet(
+                "ProtectedSubnet1",
+                AvailabilityZone=variables['zone'],
+                VpcId=variables['VpcId'],
+                CidrBlock=variables['ProtectedSubnet1_cidr'],
+                Tags=[ec2.Tag('Name', variables['ProtectedSubnet1'])]
+            )
+        )
+        # add the output var
+        template.add_output(
+            Output(
+                'ProtectedSubnet1Id',
+                Value=Ref('ProtectedSubnet1')
             )
         )
 
