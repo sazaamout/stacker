@@ -27,6 +27,14 @@ class SUBNETS(Blueprint):
             'type': str,
             'description': 'des'
         },
+        'PrivateSubnet1': {
+            'type': str,
+            'description': 'des'
+        },
+        'PrivateSubnet1_cidr': {
+            'type': str,
+            'description': 'des'
+        },
         'zone': {
             'type': str,
         }
@@ -39,6 +47,9 @@ class SUBNETS(Blueprint):
         self.template.add_version(AWS_TEMPLATE_VERSION)
         self.template.add_description('Create a Subnets')
 
+        # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        # create the Public Subnet(s)
+        # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         template.add_resource (
             ec2.Subnet(
                 "PublicSubnet1",
@@ -48,12 +59,35 @@ class SUBNETS(Blueprint):
                 Tags=[ec2.Tag('Name', variables['PublicSubnet1'])]
             )
         )
+        # add the output var
         template.add_output(
             Output(
                 'PublicSubnet1Id',
                 Value=Ref('PublicSubnet1')
             )
         )
+
+        # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        # create the Private Subnet(s)
+        # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        template.add_resource (
+            ec2.Subnet(
+                "PrivateSubnet1",
+                AvailabilityZone=variables['zone'],
+                VpcId=variables['VpcId'],
+                CidrBlock=variables['PrivateSubnet1_cidr'],
+                Tags=[ec2.Tag('Name', variables['PrivateSubnet1'])]
+            )
+        )
+        # add the output var
+        template.add_output(
+            Output(
+                'PrivateSubnet1Id',
+                Value=Ref('privateSubnet1')
+            )
+        )
+
+
 
 
     def create_template(self):
