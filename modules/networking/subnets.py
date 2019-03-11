@@ -23,9 +23,12 @@ class SUBNETS(Blueprint):
             'type': str,
             'description': 'des'
         },
-        'PublicSubnet2': {
+        'PublicSubnet1_cidr': {
             'type': str,
             'description': 'des'
+        },
+        'zone': {
+            'type': str,
         }
     }
 
@@ -39,10 +42,10 @@ class SUBNETS(Blueprint):
         template.add_resource (
             ec2.Subnet(
                 "PublicSubnet1",
-                AvailabilityZone="ca-central-1a",
+                AvailabilityZone=variables['zone'],
                 VpcId=variables['VpcId'],
-                CidrBlock='10.1.0.0/24',
-                Tags=[ec2.Tag('Name', "PublicSubnet1")]
+                CidrBlock=variables['PublicSubnet1_cidr'],
+                Tags=[ec2.Tag('Name', variables['PublicSubnet1'])]
             )
         )
         template.add_output(
