@@ -45,9 +45,9 @@ class VPC(Blueprint):
             'Default': 'myVPC'
         },
         'UseInternetGW': {
-            'type': bool
-            'description': 'toggle the creation of internetGW on/off'
-            'default': True
+            'type': bool,
+            'description': 'toggle the creation of internetGW on/off',
+            'default': False
         }
     }
 
@@ -74,7 +74,6 @@ class VPC(Blueprint):
                 Value=VPC_ID
             )
         )
-        
 
         # create the internet gateway if needed
         if variables["UseInternetGW"]:
