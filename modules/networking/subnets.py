@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-"""Module with VPC resources."""
+"""Module with SUBNET resources."""
 
 from __future__ import print_function
 
@@ -10,28 +10,10 @@ from troposphere import (
 
 from stacker.blueprints.base import Blueprint
 
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# LOGICAL RESOURCES NAMES
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-VPC_NAME = 'VPC'
-
-
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# RESOURCES IDs
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-VPC_ID = Ref(VPC_NAME)
-
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# OUTPUT VARIABLES
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-OUTPUT_VPC_ID = 'VpcId'
-
-
 AWS_TEMPLATE_VERSION = '2010-09-09'
 
-
 class SUBNETS(Blueprint):
-    """Stacker blueprint for creating a Basic VPC."""
+    """Stacker blueprint for creating a Basic Subnets."""
 
     VARIABLES = {
         'VpcId': {
@@ -59,7 +41,7 @@ class SUBNETS(Blueprint):
                 "PublicSubnet1",
                 AvailabilityZone="ca-central-1a",
                 VpcId=variables['VpcId'],
-                CidrBlock='10.0.0.0/24',
+                CidrBlock='10.1.0.0/24',
                 Tags=[ec2.Tag('Name', "PublicSubnet1")]
             )
         )
