@@ -63,7 +63,7 @@ class VPC(Blueprint):
             CidrBlock=variables['VpcCidr'],
             EnableDnsSupport=True,
             EnableDnsHostnames=True,
-            Tags=[ec2.Tag('Name', variables['VpcName'] + '-KEYWORD')]
+            Tags=[ec2.Tag('Name', variables['VpcName'] + '-LATESTREPO')]
         )
 
         template.add_resource(vpc)
